@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Box } from '@mui/material';
+import { CssBaseline, Box, Typography } from '@mui/material';
 import { Sidebar, TopNav } from './components/Layout';
 import { ProductsPage } from './pages/ProductsPage';
 import { SupplierPriceBooksPage } from './pages/SupplierPriceBooksPage';
@@ -30,6 +30,16 @@ function Layout({ children }: { children: React.ReactNode }) {
         <TopNav />
         <Box sx={{ flex: 1, overflow: 'auto', p: 3, backgroundColor: '#f9f9f9' }}>
           {children}
+        </Box>
+        {/* Version footer */}
+        <Box sx={{ px: 3, py: 0.5, borderTop: '1px solid #e0e0e0', backgroundColor: '#fafafa',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="caption" sx={{ color: '#bbb', fontSize: '0.65rem' }}>
+            Supplier Price Books Prototype — v0.2.0
+          </Typography>
+          <Typography variant="caption" sx={{ color: '#bbb', fontSize: '0.65rem' }}>
+            Kingy's Diesel Industries · Built by Alfred
+          </Typography>
         </Box>
       </Box>
     </Box>
