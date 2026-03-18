@@ -6,6 +6,8 @@ import { Sidebar, TopNav } from './components/Layout';
 import { ProductsPage } from './pages/ProductsPage';
 import { SupplierPriceBooksPage } from './pages/SupplierPriceBooksPage';
 import { POPage } from './pages/POPage';
+import { POListPage } from './pages/POListPage';
+import { POPrintPage } from './pages/POPrintPage';
 import { BillDiffPage } from './pages/BillDiffPage';
 
 const theme = createTheme({
@@ -35,7 +37,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         <Box sx={{ px: 3, py: 0.5, borderTop: '1px solid #e0e0e0', backgroundColor: '#fafafa',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="caption" sx={{ color: '#bbb', fontSize: '0.65rem' }}>
-            Supplier Price Books Prototype — v0.2.0
+            Supplier Price Books Prototype — v0.3.0
           </Typography>
           <Typography variant="caption" sx={{ color: '#bbb', fontSize: '0.65rem' }}>
             Kingy's Diesel Industries · Built by Alfred
@@ -53,12 +55,14 @@ export default function App() {
       <Router>
         <Layout>
           <Routes>
-            <Route path="/"                     element={<Navigate to="/products" replace />} />
-            <Route path="/products"             element={<ProductsPage />} />
-            <Route path="/supplier-price-books" element={<SupplierPriceBooksPage />} />
-            <Route path="/purchase-orders"      element={<POPage />} />
-            <Route path="/bill-diff"            element={<BillDiffPage />} />
-            <Route path="*"                     element={<Navigate to="/products" replace />} />
+            <Route path="/"                       element={<Navigate to="/products" replace />} />
+            <Route path="/products"               element={<ProductsPage />} />
+            <Route path="/supplier-price-books"   element={<SupplierPriceBooksPage />} />
+            <Route path="/purchase-orders"        element={<POPage />} />
+            <Route path="/purchase-orders-list"   element={<POListPage />} />
+            <Route path="/po-print/:id"           element={<POPrintPage />} />
+            <Route path="/bill-diff"              element={<BillDiffPage />} />
+            <Route path="*"                       element={<Navigate to="/products" replace />} />
           </Routes>
         </Layout>
       </Router>

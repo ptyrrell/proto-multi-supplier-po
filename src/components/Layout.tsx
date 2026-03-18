@@ -17,6 +17,7 @@ const NAV_TABS = [
   { label: 'Cost Codes',              path: '/cost-codes' },
   { label: 'Transactions',            path: '/transactions' },
   { label: 'Supplier Price Books',    path: '/supplier-price-books' },
+  { label: 'Purchase Orders',         path: '/purchase-orders-list' },
 ];
 
 export const TopNav: React.FC = () => {
