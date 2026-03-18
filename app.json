@@ -1,0 +1,9 @@
+{
+  "name": "proto-multi-supplier-po",
+  "version": "0.1.0",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
