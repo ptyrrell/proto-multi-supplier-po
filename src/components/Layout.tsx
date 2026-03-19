@@ -193,7 +193,7 @@ export const Sidebar: React.FC = () => {
       {/* Version footer */}
       <Box sx={{ mt: 'auto', px: collapsed ? 1 : 2, py: 1.5, textAlign: collapsed ? 'center' : 'left' }}>
         <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.65rem' }}>
-          {collapsed ? 'v0.4.1' : 'v0.4.1'}
+          {collapsed ? 'v0.4.2' : 'v0.4.2'}
         </Typography>
       </Box>
     </Box>

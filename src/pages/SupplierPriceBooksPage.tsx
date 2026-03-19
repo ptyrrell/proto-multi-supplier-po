@@ -215,7 +215,7 @@ export const SupplierPriceBooksPage: React.FC = () => {
               const price = priceBook[p.code] || 0;
               const primaryPrice = PRICE_BOOKS[p.primarySupplier]?.[p.code] || p.purchasePrice;
               const diff = price - primaryPrice;
-              const salesP = price * (1 + p.markup / 100);
+              const salesP = price * (1 + defaultMarkup / 100);
               const defaultSellPrice = price * (1 + defaultMarkup / 100);
               return (
                 <TableRow key={p.id} hover>
@@ -230,7 +230,7 @@ export const SupplierPriceBooksPage: React.FC = () => {
                     <TextField defaultValue={price.toFixed(2)} size="small" variant="outlined"
                       sx={{ width: 80, '& input': { fontSize: '0.78rem', py: 0.5, textAlign: 'right' } }} />
                   </TableCell>
-                  <TableCell sx={{ fontSize: '0.78rem' }}>{p.markup}%</TableCell>
+                  <TableCell sx={{ fontSize: '0.78rem' }}>{defaultMarkup}%</TableCell>
                   <TableCell sx={{ fontSize: '0.78rem', fontWeight: 600 }}>${salesP.toFixed(2)}</TableCell>
                   <TableCell sx={{ fontSize: '0.78rem', fontWeight: 600, color: '#2e7d32' }}>${defaultSellPrice.toFixed(2)}</TableCell>
                   <TableCell>
