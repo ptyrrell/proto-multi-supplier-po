@@ -9,6 +9,8 @@ import { POPage } from './pages/POPage';
 import { POListPage } from './pages/POListPage';
 import { POPrintPage } from './pages/POPrintPage';
 import { BillDiffPage } from './pages/BillDiffPage';
+import { BillsListPage } from './pages/BillsListPage';
+import { BillDetailPage } from './pages/BillDetailPage';
 
 const theme = createTheme({
   palette: {
@@ -37,7 +39,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         <Box sx={{ px: 3, py: 0.5, borderTop: '1px solid #e0e0e0', backgroundColor: '#fafafa',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="caption" sx={{ color: '#bbb', fontSize: '0.65rem' }}>
-            Supplier Price Books Prototype — v0.3.0
+            Supplier Price Books Prototype — v0.4.0
           </Typography>
           <Typography variant="caption" sx={{ color: '#bbb', fontSize: '0.65rem' }}>
             Kingy's Diesel Industries · Built by Alfred
@@ -62,6 +64,8 @@ export default function App() {
             <Route path="/purchase-orders-list"   element={<POListPage />} />
             <Route path="/po-print/:id"           element={<POPrintPage />} />
             <Route path="/bill-diff"              element={<BillDiffPage />} />
+            <Route path="/bills"                  element={<BillsListPage />} />
+            <Route path="/bills/:id"              element={<BillDetailPage />} />
             <Route path="*"                       element={<Navigate to="/products" replace />} />
           </Routes>
         </Layout>

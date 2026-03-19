@@ -11,6 +11,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import EditIcon from '@mui/icons-material/Edit';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { useNavigate } from 'react-router-dom';
 
 const FI_PURPLE = '#674EA7';
@@ -189,13 +190,25 @@ export const POListPage: React.FC = () => {
                 </TableCell>
                 <TableCell><StatusChip status={po.status} /></TableCell>
                 <TableCell>
-                  <Tooltip title="Print Preview">
-                    <Button size="small" variant="outlined" startIcon={<PrintIcon />}
-                      sx={{ textTransform: 'none', fontSize: '0.68rem', borderColor: FI_PURPLE, color: FI_PURPLE }}
-                      onClick={e => { e.stopPropagation(); navigate(`/po-print/${po.id}`); }}>
-                      Print
-                    </Button>
-                  </Tooltip>
+                  <Stack direction="row" spacing={0.5}>
+                    <Tooltip title="Print Preview">
+                      <Button size="small" variant="outlined" startIcon={<PrintIcon />}
+                        sx={{ textTransform: 'none', fontSize: '0.68rem', borderColor: FI_PURPLE, color: FI_PURPLE }}
+                        onClick={e => { e.stopPropagation(); navigate(`/po-print/${po.id}`); }}>
+                        Print
+                      </Button>
+                    </Tooltip>
+                    {(po.status === 'Received' || po.status === 'Sent') && (
+                      <Tooltip title="Generate Bill from this PO">
+                        <Button size="small" variant="contained" startIcon={<ReceiptLongIcon sx={{ fontSize: 11 }} />}
+                          sx={{ textTransform: 'none', fontSize: '0.68rem', backgroundColor: FI_ORANGE, minWidth: 'unset',
+                            '&:hover': { backgroundColor: '#e65100' } }}
+                          onClick={e => { e.stopPropagation(); navigate('/bills'); }}>
+                          Bill
+                        </Button>
+                      </Tooltip>
+                    )}
+                  </Stack>
                 </TableCell>
               </TableRow>
             ))}
