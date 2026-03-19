@@ -1,11 +1,24 @@
-import React from 'react';
-import { Box, Typography, Tabs, Tab } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Tabs, Tab, IconButton, Tooltip } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import WorkIcon from '@mui/icons-material/Work';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PeopleIcon from '@mui/icons-material/People';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 const FI_PURPLE = '#674EA7';
 const FI_BLUE   = '#027BFF';
 const FI_ORANGE = '#F57C00';
+
+const SIDEBAR_WIDTH_EXPANDED = 220;
+const SIDEBAR_WIDTH_COLLAPSED = 56;
 
 const NAV_TABS = [
   { label: 'Services',                path: '/services' },
@@ -65,59 +78,124 @@ export const TopNav: React.FC = () => {
 };
 
 const SIDEBAR_ITEMS = [
-  { label: 'Jobs',            path: null },
-  { label: 'Schedule',        path: null },
-  { label: 'Customers',       path: null },
-  { label: 'Quotes',          path: null },
-  { label: 'Invoices',        path: null },
-  { label: 'Inventory',       path: '/products' },
-  { label: 'Purchase Orders', path: '/purchase-orders-list' },
-  { label: 'Bills',           path: '/bills' },
-  { label: 'Reports',         path: null },
+  { label: 'Jobs',            path: null,                   icon: WorkIcon },
+  { label: 'Schedule',        path: null,                   icon: CalendarMonthIcon },
+  { label: 'Customers',       path: null,                   icon: PeopleIcon },
+  { label: 'Quotes',          path: null,                   icon: RequestQuoteIcon },
+  { label: 'Invoices',        path: null,                   icon: ReceiptIcon },
+  { label: 'Inventory',       path: '/products',            icon: InventoryIcon },
+  { label: 'Purchase Orders', path: '/purchase-orders-list', icon: ShoppingCartIcon },
+  { label: 'Bills',           path: '/bills',               icon: ReceiptLongIcon },
+  { label: 'Reports',         path: null,                   icon: AssessmentIcon },
 ];
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const activePath = location.pathname;
+  const [collapsed, setCollapsed] = useState(false);
+
+  const sidebarWidth = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED;
 
   return (
     <Box sx={{
-      width: 220, flexShrink: 0, backgroundColor: FI_PURPLE,
-      minHeight: '100vh', display: 'flex', flexDirection: 'column',
+      width: sidebarWidth,
+      flexShrink: 0,
+      backgroundColor: FI_PURPLE,
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      transition: 'width 0.2s ease-in-out',
+      overflow: 'hidden',
     }}>
-      <Box sx={{ backgroundColor: FI_BLUE, px: 2, py: 1.5 }}>
-        <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1rem', letterSpacing: 1 }}>
-          FIELDINSIGHT
-        </Typography>
-        <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.65rem' }}>
-          Kingy's Diesel Industries
-        </Typography>
+      {/* Header */}
+      <Box sx={{ 
+        backgroundColor: FI_BLUE, 
+        px: collapsed ? 1 : 2, 
+        py: 1.5,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: collapsed ? 'center' : 'space-between',
+        minHeight: 56,
+      }}>
+        {!collapsed && (
+          <Box>
+            <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1rem', letterSpacing: 1 }}>
+              FIELDINSIGHT
+            </Typography>
+            <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.65rem' }}>
+              Kingy's Diesel Industries
+            </Typography>
+          </Box>
+        )}
+        <Tooltip title={collapsed ? 'Expand menu' : 'Collapse menu'} placement="right">
+          <IconButton 
+            onClick={() => setCollapsed(!collapsed)}
+            sx={{ 
+              color: '#fff', 
+              p: 0.5,
+              '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' },
+            }}
+          >
+            {collapsed ? <MenuIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </Tooltip>
       </Box>
+
+      {/* Nav Items */}
       {SIDEBAR_ITEMS.map(item => {
         const isActive = item.path
           ? activePath.startsWith(item.path) || (item.path === '/products' && (activePath === '/' || activePath.startsWith('/supplier') || activePath.startsWith('/stock')))
           : false;
+        const IconComponent = item.icon;
+        
         return (
-          <Box
-            key={item.label}
-            onClick={() => item.path && navigate(item.path)}
-            sx={{
-              px: 2.5, py: 1.2,
-              cursor: item.path ? 'pointer' : 'default',
-              backgroundColor: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
-              borderLeft: isActive ? '3px solid #fff' : '3px solid transparent',
-              '&:hover': { backgroundColor: item.path ? 'rgba(255,255,255,0.1)' : 'transparent' },
-              display: 'flex', alignItems: 'center', gap: 1,
-            }}
+          <Tooltip 
+            key={item.label} 
+            title={collapsed ? item.label : ''} 
+            placement="right"
+            arrow
           >
-            {item.label === 'Bills' && <ReceiptLongIcon sx={{ fontSize: 15, color: isActive ? '#fff' : 'rgba(255,255,255,0.6)' }} />}
-            <Typography sx={{ color: '#fff', fontSize: '0.82rem', fontWeight: isActive ? 700 : 400 }}>
-              {item.label}
-            </Typography>
-          </Box>
+            <Box
+              onClick={() => item.path && navigate(item.path)}
+              sx={{
+                px: collapsed ? 1.5 : 2.5,
+                py: 1.2,
+                cursor: item.path ? 'pointer' : 'default',
+                backgroundColor: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
+                borderLeft: isActive ? '3px solid #fff' : '3px solid transparent',
+                '&:hover': { backgroundColor: item.path ? 'rgba(255,255,255,0.1)' : 'transparent' },
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.5,
+                justifyContent: collapsed ? 'center' : 'flex-start',
+              }}
+            >
+              <IconComponent sx={{ 
+                fontSize: 18, 
+                color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
+              }} />
+              {!collapsed && (
+                <Typography sx={{ 
+                  color: '#fff', 
+                  fontSize: '0.82rem', 
+                  fontWeight: isActive ? 700 : 400,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {item.label}
+                </Typography>
+              )}
+            </Box>
+          </Tooltip>
         );
       })}
+
+      {/* Version footer */}
+      <Box sx={{ mt: 'auto', px: collapsed ? 1 : 2, py: 1.5, textAlign: collapsed ? 'center' : 'left' }}>
+        <Typography sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.65rem' }}>
+          {collapsed ? 'v0.4.1' : 'v0.4.1'}
+        </Typography>
+      </Box>
     </Box>
   );
 };
