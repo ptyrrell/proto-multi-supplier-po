@@ -23,6 +23,7 @@ export const SupplierPriceBooksPage: React.FC = () => {
   const [importRows, setImportRows] = useState<ImportedRow[]>([]);
   const [importDone, setImportDone] = useState(false);
   const [search, setSearch] = useState('');
+  const [defaultMarkup, setDefaultMarkup] = useState<number>(20);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const supplier = SUPPLIERS.find(s => s.id === selectedSupplier)!;
@@ -121,6 +122,15 @@ export const SupplierPriceBooksPage: React.FC = () => {
             </Box>
           </Stack>
           <Box flex={1} />
+          <TextField
+            label="Default Markup %"
+            type="number"
+            size="small"
+            value={defaultMarkup}
+            onChange={(e) => setDefaultMarkup(Number(e.target.value))}
+            sx={{ width: 130 }}
+            InputProps={{ endAdornment: <InputAdornment position="end">%</InputAdornment> }}
+          />
           <Button variant="contained" size="small" startIcon={<AddIcon />}
             sx={{ backgroundColor: FI_BLUE, textTransform: 'none' }}>
             Add supplier
@@ -195,7 +205,7 @@ export const SupplierPriceBooksPage: React.FC = () => {
         <Table size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#f5f0ff' }}>
-              {['Item Code', 'Description', 'Category', `${supplier.name} Price`, 'Markup %', 'Sales Price', 'vs Primary', ''].map(h => (
+              {['Item Code', 'Description', 'Category', `${supplier.name} Price`, 'Markup %', 'Sales Price', 'Default Sell', 'vs Primary', ''].map(h => (
                 <TableCell key={h} sx={{ fontWeight: 700, fontSize: '0.75rem', color: FI_PURPLE }}>{h}</TableCell>
               ))}
             </TableRow>
@@ -206,6 +216,7 @@ export const SupplierPriceBooksPage: React.FC = () => {
               const primaryPrice = PRICE_BOOKS[p.primarySupplier]?.[p.code] || p.purchasePrice;
               const diff = price - primaryPrice;
               const salesP = price * (1 + p.markup / 100);
+              const defaultSellPrice = price * (1 + defaultMarkup / 100);
               return (
                 <TableRow key={p.id} hover>
                   <TableCell>
@@ -221,6 +232,7 @@ export const SupplierPriceBooksPage: React.FC = () => {
                   </TableCell>
                   <TableCell sx={{ fontSize: '0.78rem' }}>{p.markup}%</TableCell>
                   <TableCell sx={{ fontSize: '0.78rem', fontWeight: 600 }}>${salesP.toFixed(2)}</TableCell>
+                  <TableCell sx={{ fontSize: '0.78rem', fontWeight: 600, color: '#2e7d32' }}>${defaultSellPrice.toFixed(2)}</TableCell>
                   <TableCell>
                     {Math.abs(diff) < 0.01
                       ? <Chip label="Same" size="small" sx={{ fontSize: '0.65rem', backgroundColor: '#f5f5f5' }} />
